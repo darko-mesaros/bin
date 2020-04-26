@@ -32,11 +32,17 @@ exit 1
 
 die() { >&2 printf '%s\n' "$*" ; exit 1 ; }
 
+doiwork() {
+ : | socat - "$sock" 2>/dev/null || die "mpv is not playing on $sock"
+}
+
+
 info() {
-  POSITION=$(echo '{ "command": ["get_property_string", "time-pos"] }' | socat - /tmp/mpvsocket | jq .data | tr '"' ' ' | cut -d'.' -f 1)
-  REMAINING=$(echo '{ "command": ["get_property_string", "time-remaining"] }' | socat - /tmp/mpvsocket | jq .data | tr '"' ' ' | cut -d'.' -f 1)
-  FILENAME=$(echo '{ "command": ["get_property", "filename"] }' | socat - /tmp/mpvsocket | jq .data | tr '"' ' ')
-  METADATA=$(echo '{ "command": ["get_property", "filtered-metadata"] }' | socat - /tmp/mpvsocket | jq ".data.Artist, .data.Album, .data.Title")
+  doiwork
+  POSITION=$(echo '{ "command": ["get_property_string", "time-pos"] }' | socat - "$sock" | jq .data | tr '"' ' ' | cut -d'.' -f 1)
+  REMAINING=$(echo '{ "command": ["get_property_string", "time-remaining"] }' | socat - "$sock" | jq .data | tr '"' ' ' | cut -d'.' -f 1)
+  FILENAME=$(echo '{ "command": ["get_property", "filename"] }' | socat - "$sock" | jq .data | tr '"' ' ')
+  METADATA=$(echo '{ "command": ["get_property", "filtered-metadata"] }' | socat - "$sock" | jq ".data.Artist, .data.Album, .data.Title")
 
   if [[ $METADATA =~ "null" ]]
   then
@@ -49,26 +55,32 @@ info() {
   printf ' %d:%02d:%02d\n' $(($REMAINING/3600)) $(($REMAINING%3600/60)) $(($REMAINING%60))
 }
 pause() {
-  echo '{ "command": ["cycle", "pause"] }' | socat - /tmp/mpvsocket > /dev/null
+  doiwork
+  echo '{ "command": ["cycle", "pause"] }' | socat - "$sock" > /dev/null
 }
 plnext() {
-  echo '{ "command": ["playlist-next"] }' | socat - /tmp/mpvsocket > /dev/null
+  doiwork
+  echo '{ "command": ["playlist-next"] }' | socat - "$sock" > /dev/null
 }
 
 plprev() {
-  echo '{ "command": ["playlist-prev"] }' | socat - /tmp/mpvsocket > /dev/null
+  doiwork
+  echo '{ "command": ["playlist-prev"] }' | socat - "$sock" > /dev/null
 }
 
 seekback() {
-  echo '{ "command": ["seek", "-30"] }' | socat - /tmp/mpvsocket > /dev/null
+  doiwork
+  echo '{ "command": ["seek", "-30"] }' | socat - "$sock"  > /dev/null
 }
 
 seekfwd() {
-  echo '{ "command": ["seek", "+30"] }' | socat - /tmp/mpvsocket > /dev/null
+  doiwork
+  echo '{ "command": ["seek", "+30"] }' | socat - "$sock" > /dev/null
 }
 
 quit() {
-  echo '{ "command": ["quit"] }' | socat - /tmp/mpvsocket > /dev/null
+  doiwork
+  echo '{ "command": ["quit"] }' | socat - "$sock" > /dev/null
 }
 case $1 in
     *t) pause ;;
