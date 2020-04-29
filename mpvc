@@ -78,6 +78,12 @@ seekfwd() {
   echo '{ "command": ["seek", "+30"] }' | socat - "$sock" > /dev/null
 }
 
+volume() {
+  doiwork
+  echo '{ "command": ["set_property", "volume", "'"$1"'"] }' | socat - "$sock" > /dev/null
+  echo "Foo: $1"
+}
+
 quit() {
   doiwork
   echo '{ "command": ["quit"] }' | socat - "$sock" > /dev/null
@@ -88,6 +94,7 @@ case $1 in
     *p) plprev ;;
     *f) seekfwd ;;
     *b) seekback ;;
+    *v) volume "$2" ;;
     *q) quit ;;
     *i) info ;;
      *) usage
