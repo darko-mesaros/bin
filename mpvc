@@ -81,7 +81,6 @@ seekfwd() {
 volume() {
   doiwork
   echo '{ "command": ["set_property", "volume", "'"$1"'"] }' | socat - "$sock" > /dev/null
-  echo "Foo: $1"
 }
 
 quit() {
