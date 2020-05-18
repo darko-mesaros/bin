@@ -16,7 +16,7 @@ if [ -z "$1" ] ; then
 fi
 
 rofimenu() {
-  selected=$(echo -e "kohina\nmods\n" | rofi -dmenu -p "select playlist: ")
+  selected=$(echo -e "kohina\nmods\n" | rofi -theme Monokai -dmenu -p "select playlist: ")
 
   case $selected in
     kohina) play -r Kohina ;;
