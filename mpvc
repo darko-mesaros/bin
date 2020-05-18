@@ -40,12 +40,12 @@ info() {
   doiwork
   POSITION=$(echo '{ "command": ["get_property_string", "time-pos"] }' | socat - "$sock" | jq .data | tr '"' ' ' | cut -d'.' -f 1)
   REMAINING=$(echo '{ "command": ["get_property_string", "time-remaining"] }' | socat - "$sock" | jq .data | tr '"' ' ' | cut -d'.' -f 1)
-  FILENAME=$(echo '{ "command": ["get_property", "filename"] }' | socat - "$sock" | jq .data | tr '"' ' ')
+  MEDIATITLE=$(echo '{ "command": ["get_property", "media-title"] }' | socat - "$sock" | jq .data | tr '"' ' ')
   METADATA=$(echo '{ "command": ["get_property", "filtered-metadata"] }' | socat - "$sock" | jq ".data.Artist, .data.Album, .data.Title")
 
   if [[ $METADATA =~ "null" ]]
   then
-    echo $FILENAME
+    echo $MEDIATITLE
   else 
     echo $METADATA
   fi
@@ -82,6 +82,20 @@ volume() {
   echo '{ "command": ["set_property", "volume", "'"$1"'"] }' | socat - "$sock" > /dev/null
 }
 
+title() {
+  doiwork
+  POSITION=$(echo '{ "command": ["get_property_string", "time-pos"] }' | socat - "$sock" | jq .data | tr '"' ' ' | cut -d'.' -f 1)
+  REMAINING=$(echo '{ "command": ["get_property_string", "time-remaining"] }' | socat - "$sock" | jq .data | tr '"' ' ' | cut -d'.' -f 1)
+  MEDIATITLE=$(echo '{ "command": ["get_property", "media-title"] }' | socat - "$sock" | jq .data | tr '"' ' ')
+  METADATA=$(echo '{ "command": ["get_property", "filtered-metadata"] }' | socat - "$sock" | jq ".data.Artist, .data.Album, .data.Title")
+
+  if [[ $METADATA =~ "null" ]]
+  then
+    echo $MEDIATITLE
+  else 
+    echo $METADATA
+  fi
+}
 quit() {
   doiwork
   echo '{ "command": ["quit"] }' | socat - "$sock" > /dev/null
@@ -95,5 +109,6 @@ case $1 in
     *v) volume "$2" ;;
     *q) quit ;;
     *i) info ;;
+    *tl) title ;;
      *) usage
 esac
