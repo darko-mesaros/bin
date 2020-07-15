@@ -28,11 +28,11 @@ vol="$(echo "$volstat" | grep '[0-9]\+%' | sed "s,.* \([0-9]\+\)%.*,\1,;1q")"
 # vol=$(echo "$volstat" | grep -o "\[[0-9]\+%\]" | sed "s/[^0-9]*//g;1q") # ALSA
 
 if [ "$vol" -gt "70" ]; then
-	icon="🔊"
+	icon="[VOL]: "
 elif [ "$vol" -lt "30" ]; then
-	icon="🔈"
+	icon="[vol]: "
 else
-	icon="🔉"
+	icon="[vol]: "
 fi
 
 printf "%s%s%%\\n" "$icon" "$vol"

@@ -9,4 +9,5 @@ case $BLOCK_BUTTON in
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-sensors | awk '/Core 0/ {print "🌡" $3}'
+sensors | awk '/Tdie: / {print "[cpu]: " $2 }'
+
