@@ -40,7 +40,7 @@ if [ ! -e "$path" ] ; then
             *)
                 # must be a non-url string
                 # try to find a local path to play
-                path=$(f ~/mus "$path" | head -n 1)
+                path=$(f ~/Music "$path" | head -n 1)
                 printf '%s\n' "Playing: $path"
     esac
 fi
