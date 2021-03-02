@@ -6,7 +6,6 @@
 # req: 
 # youtube-dl
 # mpv
-# 
 
 case ${1#-} in
     h)
