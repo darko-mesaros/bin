@@ -29,6 +29,7 @@ while [ "$1" ] ; do
         -h) usage ;;
         -r) MPV_OPTS="$MPV_OPTS --shuffle" ; shift ;;
         -l) MPV_OPTS="$MPV_OPTS --loop"    ; shift ;;
+        -w) MPV_OPTS="$MPV_OPTS --quiet --vo=tct --lavfi-complex=[aid1]asplit[ao][a1];[a1]showwaves=mode=cline:colors=green:rate=25[vo]"; shift ;;
          *) path=$* ; break
     esac
 done
@@ -49,7 +50,5 @@ pkill -x mpv
 pkill -x skroll
 
 [ -f "$path"/cover.jpg ] && img "$path"/cover.jpg &
-# Removed the --no-terminal option as I want play to show more
-#exec mpv $MPV_OPTS --no-video --no-terminal -- "$path"
 # TODO: Add the option just to display the song name instead of the full output
 exec mpv $MPV_OPTS --no-video -- "$path"
