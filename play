@@ -40,7 +40,7 @@ if [ ! -e "$path" ] ; then
             *)
                 # must be a non-url string
                 # try to find a local path to play
-                path=$(f ~/Music "$path" | head -n 1)
+                path=$(f ~/mus "$path" | head -n 1)
                 printf '%s\n' "Playing: $path"
     esac
 fi
@@ -49,4 +49,7 @@ pkill -x mpv
 pkill -x skroll
 
 [ -f "$path"/cover.jpg ] && img "$path"/cover.jpg &
-exec mpv $MPV_OPTS --no-video --no-terminal -- "$path"
+# Removed the --no-terminal option as I want play to show more
+#exec mpv $MPV_OPTS --no-video --no-terminal -- "$path"
+# TODO: Add the option just to display the song name instead of the full output
+exec mpv $MPV_OPTS --no-video -- "$path"
