@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# http://github.com/darko-mesaros/bin
+#
+# rofi menu of screen recording
+#
+# req:
+# 
+# rofi
+# ffcast
+# slop
+#
+
+usage() { >&2 echo "-r; to be used as a rofi shortcut in your favorite wm" ; exit 1 ; }
+
+if [ -z "$1" ] ; then
+    [ "$1" ] || exit 1
+fi
+
+# Restart pulseaudio
+restartpa(){
+  pulseaudion --kill
+}
+
+restartdunstrc(){
+  pulseaudion --kill
+}
+
+rofimenu() {
+  date
+  selected=$(echo -e "Stop\nRecord Window\nRecord Selection\n" | rofi -theme Monokai -dmenu -p "select command: ")
+
+  case $selected in
+    "Stop")pkill -fxn '(/\S+)*ffmpeg\s.*\sx11grab\s.*';;
+    "Record Window") 
+      ffcast -w ffmpeg -f x11grab -show_region 1 -s %s -i %D+%c ~/vid/screen-rec/screenrec-window-$(date +"%FT%H%M%S").mp4
+      ;;
+    "Record Selection")
+    ffcast -q $(while slop -q -n -f '-g %g ';do :;done) rec ~/vid/screen-rec/screenrec-selection-$(date +"%FT%H%M%S").mp4
+    ;;
+  esac
+}
+
+rofimenu
