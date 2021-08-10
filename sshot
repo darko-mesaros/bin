@@ -16,13 +16,13 @@ if [ -z "$1" ] ; then
 fi
 
 fullscreen() {
-  maim ~/pic/screens/$(date +%F-%T).png
+  maim /mnt/nas/sync/pictures/screens/x201/$(date +%F-%T).png
 }
 window() {
-  maim -i $(xdotool getactivewindow) ~/pic/screens/$(date +%F-%T).png
+  maim -i $(xdotool getactivewindow) /mnt/nas/sync/pictures/screens/x201/$(date +%F-%T).png
 }
 region() {
-  maim --select ~/pic/screens/$(date +%F-%T).png
+  maim --select /mnt/nas/sync/pictures/screens/x201/$(date +%F-%T).png
 }
 case $1 in
     -r) region ;;

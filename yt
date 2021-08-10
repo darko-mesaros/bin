@@ -20,6 +20,10 @@ case ${1#-} in
     m)
         shift
         MPV_OPTS="$MPV_OPTS --no-video"
+        ;;
+    x)
+        shift
+        MPV_OPTS="$MPV_OPTS --vo=caca"
 esac
 
 pkill -x mpv

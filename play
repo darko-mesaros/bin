@@ -27,9 +27,9 @@ fi
 while [ "$1" ] ; do
     case $1 in
         -h) usage ;;
-        -r) MPV_OPTS="$MPV_OPTS --shuffle" ; shift ;;
-        -l) MPV_OPTS="$MPV_OPTS --loop"    ; shift ;;
-        -w) MPV_OPTS="$MPV_OPTS --quiet --vo=tct --lavfi-complex=[aid1]asplit[ao][a1];[a1]showwaves=mode=cline:colors=green:rate=25[vo]"; shift ;;
+        -r) MPV_OPTS="$MPV_OPTS --quiet --shuffle" ; shift ;;
+        -l) MPV_OPTS="$MPV_OPTS --quiet --loop"    ; shift ;;
+        -w) MPV_OPTS="$MPV_OPTS --quiet --shuffle --vo=tct --lavfi-complex=[aid1]asplit[ao][a1];[a1]showwaves=mode=cline:colors=green:rate=25[vo]"; shift ;;
          *) path=$* ; break
     esac
 done
