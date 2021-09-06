@@ -15,6 +15,12 @@ if [ -z "$1" ] ; then
     [ "$1" ] || exit 1
 fi
 
+rec1280() {
+filename="/home/darko/vid/scrrec/scrrec-"$(date +%F-%H-%M-%S).mkv
+ffmpeg -f alsa -ac 2 -i pulse -f x11grab -r 30 -s 1280x1024 -i :0.0+0,0 \
+            -vcodec libx264 -pix_fmt yuv420p -preset ultrafast -crf 0 -threads 0 \
+            -acodec pcm_s16le -y $filename
+}
 record2k() {
 filename="/home/darko/vid/scrrec/scrrec-"$(date +%F-%H-%M-%S).mkv
 ffmpeg -f alsa -ac 2 -i pulse -f x11grab -r 30 -s 2560x1440 -i :0.0+440,0 \
@@ -28,6 +34,7 @@ ffmpeg -f alsa -ac 2 -i pulse -f x11grab -r 30 -s 3840x2160 -i :0.0+0,1440 \
             -acodec pcm_s16le -y $filename
 }
 case $1 in
+    -12) rec1280 ;;
     -2) record2k ;;
     -4) record4k ;;
 esac
