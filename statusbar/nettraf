@@ -5,8 +5,8 @@
 # second, gives network traffic per second.
 
 case "$BLOCK_BUTTON" in
-	3) notify-send "🌐 Network traffic module" "🔻: Traffic received
-🔺: Traffic transmitted" ;;
+	3) notify-send " Network traffic module" " : Traffic received
+ : Traffic transmitted" ;;
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
@@ -16,7 +16,7 @@ txfile="${XDG_CACHE_HOME:-$HOME/.cache}/txlog"
 rxcurrent="$(cat /sys/class/net/*/statistics/rx_bytes | paste -sd '+' | bc)"
 txcurrent="$(cat /sys/class/net/*/statistics/tx_bytes | paste -sd '+' | bc)"
 
-printf "🔻%sKiB 🔺%sKiB\\n" \
+printf " %sKiB  %sKiB\\n" \
 	"$(printf -- "(%s-%s)/1024\\n" "$rxcurrent" "$(cat "$rxfile")" | bc)" \
 	"$(printf -- "(%s-%s)/1024\\n" "$txcurrent" "$(cat "$txfile")" | bc)"
 
